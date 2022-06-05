@@ -1,0 +1,35 @@
+.box-wrapper {
+  margin-top: 25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #222222;
+  border-radius: 8px;
+  padding: 15px;
+
+  .form-wrapper {
+    margin-top: 1rem;
+  }
+
+  .form-field-item-input {
+    margin-top: 1rem
+  }
+
+  .form-field-item-button {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+  }
+
+  .form-field-google-button {
+    display: flex;
+    justify-content: center;
+  }
+
+  .form-field-captions {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 1rem;
+  }
+}

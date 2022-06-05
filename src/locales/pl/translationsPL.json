@@ -1,0 +1,12 @@
+{
+  "PAGE_INFO": {
+    "NAME": "Dnd Mate"
+  },
+  "USER_SERVICES": {
+    "LOGIN": "Login",
+    "EMAIL_ADDRESS": "Adres Email",
+    "PASSWORD": "Hasło",
+    "SIGN_IN": "Zaloguj się",
+    "REPEAT_PASSWORD": "Powtórz Hasło"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "PAGE_INFO": {
+    "NAME": "Dnd Mate"
+  },
+
+  "GLOBAL_MESSAGES": {
+    "BASIC_ERROR": "Something wen't wrong. Please try again."
+  },
+
+  "ACTIONS": {
+    "CANCEL": "Cancel"
+  },
+
+  "USER_SERVICES": {
+    "LOGIN": "Login",
+    "EMAIL_ADDRESS": "Email address",
+    "PASSWORD": "Password",
+    "SIGN_IN": "Sign In",
+    "RETURN_TO_SIGN_IN": "Return to sign in",
+    "CREATE_ACCOUNT": "Create account",
+    "REPEAT_PASSWORD": "Confirm password",
+    "FORGOT_PASSWORD": "Forgot password?",
+    "DONT_HAVE_AN_ACCOUNT": "Don't have an account? Sign up",
+    "ALREADY_HAVE_AN_ACCOUNT": "Already have an account? Sign in",
+    "SIGNIN_ERROR": "Email or password are incorrect.",
+    "REGISTER_EMAIL_ERROR": "Please use proper email format.",
+    "REGISTER_PASSWORD_ERROR": "Passwords are not identical.",
+    "RECOVER_PASSWORD": "Recover password",
+    "RECOVER_PASSWORD_HEADING": "Enter your email to recover your password",
+    "RECOVER_PASSWORD_MESSAGE": "If account with email {{email}} exists, you will get an email with instructions on resetting your password. Don't forget to check in Spam!"
+  }
+}
