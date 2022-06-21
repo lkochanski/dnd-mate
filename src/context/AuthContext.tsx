@@ -9,7 +9,9 @@ import {
   GoogleAuthProvider,
   signInWithPopup
 } from "firebase/auth";
-import { UserInfo } from '@firebase/auth-types';
+import {UserInfo} from '@firebase/auth-types';
+import {useAppDispatch} from "../app/hooks";
+import {setUserData} from "../redux/slices/userSlice";
 
 const UserContext: any | undefined = createContext(undefined);
 
@@ -17,6 +19,7 @@ const UserContext: any | undefined = createContext(undefined);
 export const AuthContextProvider = ({children}: any) => {
 
   const [user, setUser] = useState<UserInfo | null | undefined>();
+  const dispatch = useAppDispatch();
 
   const createUser = (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password)
@@ -34,26 +37,42 @@ export const AuthContextProvider = ({children}: any) => {
   const sendRecoveryPasswordMail = async (email: string) => {
 
     await sendPasswordResetEmail(auth, email);
-    console.log("Sended!")
   }
 
   const logout = () => {
     return signOut(auth);
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+
+      if (!!currentUser) {
+        const preparedUserData = {
+          providerId: currentUser.providerId,
+          uid: currentUser.uid,
+          displayName: currentUser.displayName,
+          email: currentUser.email,
+          emailVerified: currentUser.emailVerified,
+          phoneNumber: currentUser.phoneNumber,
+          photoURL: currentUser.photoURL,
+          isAnonymous: currentUser.isAnonymous,
+        }
+        dispatch(setUserData(preparedUserData));
+      }
+
+
     });
+
     return () => {
       unsubscribe();
     }
-  },[])
+  }, [])
 
   return (
-      <UserContext.Provider value={{ createUser, logout, signIn, googleSignIn, sendRecoveryPasswordMail, user }}>
-        {children}
-      </UserContext.Provider>
+    <UserContext.Provider value={{createUser, logout, signIn, googleSignIn, sendRecoveryPasswordMail, user}}>
+      {children}
+    </UserContext.Provider>
   );
 };
 
