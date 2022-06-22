@@ -12,6 +12,7 @@ import {
 import {UserInfo} from '@firebase/auth-types';
 import {useAppDispatch} from "../app/hooks";
 import {setUserData} from "../redux/slices/userSlice";
+import {setGlobalLoading} from "../redux/slices/reduxAppSlice";
 
 const UserContext: any | undefined = createContext(undefined);
 
@@ -59,10 +60,24 @@ export const AuthContextProvider = ({children}: any) => {
           isAnonymous: currentUser.isAnonymous,
         }
         dispatch(setUserData(preparedUserData));
+      } else {
+
+        const preparedUserData = {
+          providerId: "",
+          uid: "",
+          displayName: null,
+          email: null,
+          emailVerified: false,
+          phoneNumber: "",
+          photoURL: null,
+          isAnonymous: false,
+        }
+
+        dispatch(setUserData(preparedUserData));
       }
+      dispatch(setGlobalLoading(false));
 
-
-    });
+  });
 
     return () => {
       unsubscribe();

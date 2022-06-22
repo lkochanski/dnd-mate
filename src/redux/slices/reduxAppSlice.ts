@@ -15,6 +15,7 @@ const reduxApp = createSlice({
   initialState,
   reducers: {
     setGlobalLoading(state, action: PayloadAction<boolean>) {
+      console.log(action.payload)
       state.isGlobalLoading = action.payload;
     }
   }
