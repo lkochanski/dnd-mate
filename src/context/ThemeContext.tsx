@@ -15,7 +15,7 @@ export const ThemeContext = createContext<IThemeContext>({
 })
 
 export const ThemeContextProvider = ({children}: any) => {
-  const [mode, setMode] = useState<"light" | "dark">("dark");
+  const [mode, setMode] = useState<"light" | "dark">("light");
   const themeMode = useMemo(
     () => ({
       toggleThemeMode: () => {

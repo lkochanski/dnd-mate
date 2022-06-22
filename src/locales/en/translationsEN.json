@@ -13,6 +13,7 @@
 
   "USER_SERVICES": {
     "LOGIN": "Login",
+    "LOGOUT": "Logout",
     "EMAIL_ADDRESS": "Email address",
     "PASSWORD": "Password",
     "SIGN_IN": "Sign In",
@@ -20,6 +21,7 @@
     "CREATE_ACCOUNT": "Create account",
     "REPEAT_PASSWORD": "Confirm password",
     "FORGOT_PASSWORD": "Forgot password?",
+    "MY_ACCOUNT": "My account",
     "DONT_HAVE_AN_ACCOUNT": "Don't have an account? Sign up",
     "ALREADY_HAVE_AN_ACCOUNT": "Already have an account? Sign in",
     "SIGNIN_ERROR": "Email or password are incorrect.",

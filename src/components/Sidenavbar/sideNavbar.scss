@@ -1,0 +1,17 @@
+.sidenavbar-wrapper {
+  display: flex;
+
+  .sidenavbar-navbar-panel {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidenavbar-navbar-actions {
+    display: flex;
+    align-items: center;
+  }
+}
+
+

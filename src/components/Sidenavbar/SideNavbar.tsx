@@ -15,8 +15,21 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import UserMenu from "../UserMenu/UserMenu";
+import {Switch} from "@mui/material";
+import {useTranslation} from "react-i18next";
+import Tooltip from "@mui/material/Tooltip";
+import {navbarPages} from "../../app/config";
+
+
+import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
+import "./sideNavbar.scss"
 
 const drawerWidth = 240;
 
@@ -41,12 +54,11 @@ const closedMixin = (theme: Theme): CSSObject => ({
   },
 });
 
-const DrawerHeader = styled('div')(({ theme }) => ({
+const DrawerHeader = styled('div')(({theme}) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -56,7 +68,7 @@ interface AppBarProps extends MuiAppBarProps {
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
+})<AppBarProps>(({theme, open}) => ({
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
@@ -72,8 +84,8 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
+const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
+  ({theme, open}) => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
@@ -96,8 +108,9 @@ interface ISideNavbarProps {
 export default function SideNavbar(props: ISideNavbarProps) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const {t} = useTranslation();
 
-  const { panelTitle } = props
+  const {panelTitle} = props
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -108,7 +121,7 @@ export default function SideNavbar(props: ISideNavbarProps) {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box className={"sidenavbar-wrapper"}>
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
@@ -118,72 +131,84 @@ export default function SideNavbar(props: ISideNavbarProps) {
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: 'none' }),
+              ...(open && {display: "none"}),
             }}
           >
-            <MenuIcon />
+            <MenuIcon/>
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {panelTitle}
-          </Typography>
+          <Box className={"sidenavbar-navbar-panel"}>
+            <Typography variant="h6" noWrap component="div">
+              {panelTitle}
+            </Typography>
+            <Box className={"sidenavbar-navbar-actions"}>
+              <Tooltip title={t('USER_SERVICES.MY_ACCOUNT')}>
+                <Switch/>
+              </Tooltip>
+              <UserMenu/>
+            </Box>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
           </IconButton>
         </DrawerHeader>
-        <Divider />
+        <Divider/>
         <List>
-          {['Characters', 'Spellbook', 'Monster Manual', 'Armory', 'My Favorites'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+          {navbarPages.map((navbarPage) => {
+            let icon: any;
+
+            switch (navbarPage.icon) {
+              case "DashboardIcon":
+                icon = DashboardCustomizeIcon
+                break;
+              case "CharactersIcon":
+                icon = PeopleAltIcon
+                break;
+              case "SpellsIcon":
+                icon = AutoFixHighIcon
+                break;
+              case "MonsterIcon":
+                icon = MenuBookIcon
+                break;
+              case "BackpackIcon":
+                icon = InventoryIcon
+                break;
+              case "FavoriteIcon":
+                icon = FavoriteIcon
+                break;
+
+              default:
+                icon = FavoriteIcon;
+            }
+
+            return (
+              <ListItem key={navbarPage.name} disablePadding sx={{display: 'block'}}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {React.createElement(icon)}
+                  </ListItemIcon>
+                  <ListItemText primary={navbarPage.name} sx={{opacity: open ? 1 : 0}}/>
+                </ListItemButton>
+              </ListItem>
+            )
+          })}
         </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        <Divider/>
       </Drawer>
     </Box>
   );

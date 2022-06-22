@@ -1,7 +1,5 @@
 import React from 'react';
-import {UserAuth} from "../../context/AuthContext";
-import {useNavigate} from "react-router-dom";
-import SideNavbar from "../../components/SideNavbar";
+import SideNavbar from "../../components/Sidenavbar/SideNavbar";
 
 import {
   getDatabase,
@@ -10,17 +8,6 @@ import {
   onValue} from "firebase/database"
 
 const DashboardPage = () => {
-  const {user, logout}: any = UserAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate("/sign-in");
-    } catch(e: any) {
-      console.log(e.message)
-    }
-  }
 
   function writeUserData(userId: string) {
     const db = getDatabase();
@@ -62,9 +49,6 @@ const DashboardPage = () => {
   return (
     <>
       <SideNavbar panelTitle={"Characters"}/>
-      <h3>DashboardPage</h3>
-      <h4>User Email: {user && user.email}</h4>
-      <button onClick={handleLogout}>LogOut</button>
     </>
   );
 };
