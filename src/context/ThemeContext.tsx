@@ -1,5 +1,5 @@
-import React, {createContext, useContext, useMemo, useState} from "react";
-import {createTheme, ThemeProvider} from "@mui/material";
+import React, {createContext, useContext, useEffect, useMemo, useState} from "react";
+import {createTheme, PaletteMode, ThemeProvider} from "@mui/material";
 import {lightTheme} from "../themes/lightTheme";
 import {darkTheme} from "../themes/darkTheme";
 
@@ -15,11 +15,44 @@ export const ThemeContext = createContext<IThemeContext>({
 })
 
 export const ThemeContextProvider = ({children}: any) => {
-  const [mode, setMode] = useState<"light" | "dark">("light");
+
+  const getLocalStorageTheme = () => {
+    const localStorageTheme = localStorage.getItem("theme-setting")
+
+    if (localStorageTheme) {
+      return JSON.parse(localStorageTheme);
+    } else {
+      return "light";
+    }
+  }
+
+  const [mode, setMode] = useState<PaletteMode>(getLocalStorageTheme());
+
+  useEffect(() => {
+    const localStorageTheme = localStorage.getItem("theme-setting");
+
+    if (localStorageTheme) {
+      const parsedLocalStorageTheme = JSON.parse(localStorageTheme);
+      console.log("localStorageTheme");
+      console.log(typeof localStorageTheme);
+      console.log(typeof parsedLocalStorageTheme);
+
+      setMode(parsedLocalStorageTheme);
+    } else {
+      setMode("light");
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('theme-setting', JSON.stringify(mode));
+  },[mode]);
+
+
   const themeMode = useMemo(
     () => ({
       toggleThemeMode: () => {
         setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+        localStorage.setItem('theme-setting', JSON.stringify(mode === "light" ? "dark" : "light"));
       },
       mode,
     }),[mode]);

@@ -20,16 +20,22 @@ import {Switch} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import Tooltip from "@mui/material/Tooltip";
 import {navbarPages} from "../../app/config";
-
-
+import {ThemeContext} from "../../context/ThemeContext";
+import {useContext} from "react";
 import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
+import NotesIcon from '@mui/icons-material/Notes';
+import { useNavigate } from 'react-router-dom'
 
 import "./sideNavbar.scss"
+
+const snapSoundOn = require('../../assets/audio/snap1.mp3');
+const snapSoundOff = require('../../assets/audio/snap2.mp3');
 
 const drawerWidth = 240;
 
@@ -102,15 +108,26 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
 );
 
 interface ISideNavbarProps {
-  panelTitle: string
+  panelTitle: string,
+  children?: JSX.Element
 }
 
-export default function SideNavbar(props: ISideNavbarProps) {
+export default function SideNavbar({panelTitle, children}: ISideNavbarProps) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const {t} = useTranslation();
+  const { toggleThemeMode, mode } = useContext(ThemeContext);
+  const navigate = useNavigate();
 
-  const {panelTitle} = props
+  const snapOn = new Audio(snapSoundOn);
+  const snapOff = new Audio(snapSoundOff);
+
+  const handleThemeSwitch = () => {
+    toggleThemeMode();
+    mode === "light"
+      ? snapOn.play()
+      : snapOff.play()
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -141,8 +158,8 @@ export default function SideNavbar(props: ISideNavbarProps) {
               {panelTitle}
             </Typography>
             <Box className={"sidenavbar-navbar-actions"}>
-              <Tooltip title={t('USER_SERVICES.MY_ACCOUNT')}>
-                <Switch/>
+              <Tooltip title={t('USER_SERVICES.CURRENT_THEME_MODE', {themeMode: mode})}>
+                <Switch onChange={handleThemeSwitch} checked={mode !== "light"}/>
               </Tooltip>
               <UserMenu/>
             </Box>
@@ -179,13 +196,19 @@ export default function SideNavbar(props: ISideNavbarProps) {
               case "FavoriteIcon":
                 icon = FavoriteIcon
                 break;
+              case "HistoryEduIcon":
+                icon = HistoryEduIcon
+                break;
+              case "NotesIcon":
+                icon = NotesIcon
+                break;
 
               default:
                 icon = FavoriteIcon;
             }
 
             return (
-              <ListItem key={navbarPage.name} disablePadding sx={{display: 'block'}}>
+              <ListItem key={navbarPage.name} disablePadding sx={{display: 'block'}} onClick={() => navigate(`/${navbarPage.route}`)}>
                 <ListItemButton
                   sx={{
                     minHeight: 48,
@@ -210,6 +233,9 @@ export default function SideNavbar(props: ISideNavbarProps) {
         </List>
         <Divider/>
       </Drawer>
+      <Box component="main" sx={{flexGrow: 1, padding: "5rem 2rem 0 2rem"}}>
+        {children}
+      </Box>
     </Box>
   );
 }

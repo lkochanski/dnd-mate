@@ -15,12 +15,11 @@ const reduxApp = createSlice({
   initialState,
   reducers: {
     setGlobalLoading(state, action: PayloadAction<boolean>) {
-      console.log(action.payload)
       state.isGlobalLoading = action.payload;
     }
   }
 });
 
-export const { setGlobalLoading } = reduxApp.actions;
+export const {setGlobalLoading} = reduxApp.actions;
 
 export default reduxApp.reducer

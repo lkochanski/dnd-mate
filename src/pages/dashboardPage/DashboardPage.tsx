@@ -45,10 +45,13 @@ const DashboardPage = () => {
     });
   }
 
-
   return (
     <>
-      <SideNavbar panelTitle={"Characters"}/>
+      <SideNavbar panelTitle={"Dashboard"}>
+        <div>
+          Dashboard Page
+        </div>
+      </SideNavbar>
     </>
   );
 };
